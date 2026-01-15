@@ -6,11 +6,13 @@ plotly>=5.18
 numpy>=1.26
 pandas>=2.1
 matplotlib>=3.8
+scipy
 
 geopandas>=0.14
 shapely>=2.0
 pyproj>=3.6
 pyogrio>=0.7
 fiona>=1.9
+rtree
 
 requests>=2.31
