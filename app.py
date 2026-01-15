@@ -205,6 +205,8 @@ FM_COLS_AV = [
 
 #---------------- Initialization of Dash app ------------------------------------------------------------------------------
 app = Dash(__name__, external_stylesheets=[dbc.themes.COSMO])
+# Expose the server object for Gunicorn
+server = app.server
 
 
 column_labels = {
@@ -948,6 +950,5 @@ def update_map(
 if __name__ == '__main__':
     app.run_server(debug=True)
 
-# Expose the server object for Gunicorn
-server = app.server
+
 
