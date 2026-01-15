@@ -18,11 +18,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      # HIER GELÖSCHT: Pip install und venv sind unnötig, 
-      # da Azure die Installation selbst machen muss (wegen Linux Binary Kompatibilität).
-
+      # WICHTIG: Wir zippen alles im aktuellen Verzeichnis
       - name: Zip artifact for deployment
-        # Änderung: "zip -r release.zip ." ist sicherer als "./*"
         run: zip -r release.zip . -x "venv/*" ".git/*" ".github/*"
 
       - name: Upload artifact for deployment jobs
