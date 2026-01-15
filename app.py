@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import geopandas as gpd
 import json
+import os
 import plotly.graph_objects as go
 import sys
 import pandas as pd
@@ -20,16 +21,15 @@ from dash import callback, Input, Output, State
 import plotly.graph_objects as go
 from dash.exceptions import PreventUpdate
 
-# Load shapefile for the main content
-url_input_shapefile = "https://raw.githubusercontent.com/swerner24/Tool_biogas_plants/main/data/Polygons_Cantonal_Climate_WGS_1984.shp"
-url_technical="https://raw.githubusercontent.com/swerner24/Tool_biogas_plants/main/data/Polygons_technical_29_12_25_export_wgs.shp"
-url_biogasplants="https://raw.githubusercontent.com/swerner24/Tool_biogas_plants/main/data/biogas_plants_points_export_wgs.shp"
-url_legal="https://raw.githubusercontent.com/swerner24/Tool_biogas_plants/main/data/Polygons_legal_29_12_25_Project_export_wgs.shp"
+input_shapefile = "data/Polygons_Cantonal_Climate_WGS_1984.shp"
+technical_path = "data/Polygons_technical_29_12_25_export_wgs.shp"
+biogas_path = "data/biogas_plants_points_export_wgs.shp"
+legal_path = "data/Polygons_legal_29_12_25_Project_export_wgs.shp"
 
-input_shapefile=url_input_shapefile
-gdf_technical= gpd.read_file(url_technical)
-gdf_plants=gpd.read_file(url_biogasplants)
-gdf_legal=gpd.read_file(url_legal)
+# Laden der Dateien
+gdf_technical = gpd.read_file(technical_path)
+gdf_plants = gpd.read_file(biogas_path)
+gdf_legal = gpd.read_file(legal_path)
 
 
 gdf_main, fm_totals, dm_totals, x1, x2, x3, x4, x5, x6= calculate_potential(input_shapefile)
