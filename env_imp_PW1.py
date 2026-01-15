@@ -20,22 +20,13 @@ import datetime as dt
 
 
 
-input_shapefile='C:/Users/Werner/PhD/Paper2/Shapfiles_25.9.25/Polygons_Cantonal_Climate_WGS_1984.shp'
-outliers_aggregated= 'C:/Users/Werner/PhD/Paper1/Shapefiles/Polygon_outlier_WGS_1984.shp'
+input_shapefile = "data/Polygons_Cantonal_Climate_WGS_1984.shp"
+
 calc_columns = {}
 #-------------------
-#Input for LCA calculations
-# ToDo: berarbeiten mit den Kantonalen Polygonen!)
+
 potential_env_imp, methane,x1= calculate_potential_env_imp(input_shapefile)
 
-potential_env_imp_outlier, methane_outlier,x1= calculate_potential_env_imp(outliers_aggregated)
-
-Swiss_aggregated_primary_energy_available_GJ= (potential_env_imp['Total_primary_energy_available_GJ_env_imp'].sum()+potential_env_imp_outlier['Total_primary_energy_available_GJ_env_imp'].sum()).round(2)
-Swiss_aggregated_biomethane_yield_available_GJ= (potential_env_imp['Total_biomethane_yield_available_GJ_env_imp'].sum()+potential_env_imp_outlier['Total_biomethane_yield_available_GJ_env_imp'].sum()).round(2)
-Swiss_aggregated_biomethane_yield_available_m3= (potential_env_imp['Total_biomethane_yield_available_m3'].sum()+potential_env_imp_outlier['Total_biomethane_yield_available_m3'].sum()).round(2)
-#print(f'Available primary energy content for valorization : {Swiss_aggregated_primary_energy_available_GJ}')
-#print(f'Available pot. biomethane yield for valorization: {Swiss_aggregated_biomethane_yield_available_GJ}')
-#print(f'Available pot. biomethane yield for valorization in m3: {Swiss_aggregated_biomethane_yield_available_m3}')
 
 #-------Prep.---------------------------------
 
@@ -91,11 +82,7 @@ for sp in SPECIES:
 #----------------------------------------
 #Berechnung
 nitrogen= calculate_nitrogen(input_shapefile)
-nitrogen_outlier= calculate_nitrogen(outliers_aggregated)
 
-Swiss_aggregated_nitrogen_theor= (nitrogen['Total_theor_N_kg'].sum()+nitrogen_outlier['Total_theor_N_kg'].sum()).round(2)
-Swiss_aggregated_nitrogen_avail= (nitrogen['Total_avail_N_kg'].sum()+nitrogen_outlier['Total_avail_N_kg'].sum()).round(2)
-Swiss_aggregated_nitrogen_onpasture= (nitrogen['Total_N_on_pasture'].sum()+nitrogen_outlier['Total_N_on_pasture'].sum()).round(2)
 
 #print(f'Total nitrogeeeeeeen [kg]: {Swiss_aggregated_nitrogen_theor}')
 #print(f'Total nitrogeeeeeeen [kg]: {Swiss_aggregated_nitrogen_avail}')
