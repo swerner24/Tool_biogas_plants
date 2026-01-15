@@ -8,3 +8,12 @@
 /dataSources.local.xml
 .idea/
 clean_env/
+# Python cache
+__pycache__/
+*.pyc
+
+# Project-specific local folders
+tool_env_2/
+python/
+.env
+python
