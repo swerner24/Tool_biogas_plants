@@ -504,21 +504,42 @@ def toggle_controls(map_mode, gwp_pathway):
     prevent_initial_call=True
 )
 def store_selected_fid(clickData, clear_clicks, map_mode):
-    if map_mode in ["technical", "legal","gwp"]:
+    # 1. Sicherheitscheck: In anderen Modi nichts tun
+    if map_mode in ["technical", "legal", "gwp"]:
         return None
 
+    # 2. Prüfen, wer den Callback ausgelöst hat
     if not ctx.triggered:
         raise PreventUpdate
-
+    
     trigger = ctx.triggered_id
 
+    # 3. Bei "Deselect" Button
     if trigger == "clear-selection":
         return None
 
+    # 4. Der eigentliche Klick auf die Karte (Dein Fix!)
     if trigger == "graph":
-        if not clickData:
+        # Grundlegender Check: Haben wir überhaupt Daten?
+        if not clickData or "points" not in clickData or not clickData["points"]:
             raise PreventUpdate
-        return int(clickData["points"][0]["customdata"][0])
+
+        p = clickData["points"][0]
+
+        # Strategie A: Customdata (Unsere bevorzugte ID)
+        if "customdata" in p and p["customdata"] is not None:
+            cd = p["customdata"]
+            # Sicherstellen, dass wir eine einzelne Zahl bekommen (manchmal ist es eine Liste)
+            return int(cd[0] if isinstance(cd, (list, tuple)) else cd)
+
+        # Strategie B: Location (Backup, oft identisch mit der ID bei Choropleth)
+        if "location" in p and p["location"] is not None:
+            return int(p["location"])
+
+        # Wenn wir hier sind, wurde geklickt, aber es war kein gültiges Polygon 
+        # (z.B. Klick auf eine Grenzlinie oder Hintergrund).
+        # Besser nichts tun als abstürzen.
+        raise PreventUpdate
 
     raise PreventUpdate
 
