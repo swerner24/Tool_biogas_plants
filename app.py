@@ -260,6 +260,12 @@ app.layout = html.Div([
         "and site-specific conditions. To reflect this uncertainty, both restrictive and lenient "
         "estimates are provided based on expert judgement and the literature."
     ),
+    html.P(
+        "Transport distance representation: "
+        "The displayed buffer represents an equivalent linear (Euclidean) distance, adjusted by "
+        "polygon-specific detour factors to approximate a maximum road transport distance."
+        "All polygons that intersect the buffer are selected and fully included in the aggregation."
+    ),
 
     html.H4("Methodological background"),
     html.P(
