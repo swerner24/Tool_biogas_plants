@@ -43,6 +43,8 @@ cantons_geojson = json.loads(gdf_cantons.to_json())
 geojson_main = json.loads(gdf_main.to_json())
 geojson_technical = json.loads(gdf_technical.to_json())
 geojson_legal = json.loads(gdf_legal.to_json())
+gdf_main_4326 = gdf_main.to_crs(4326).copy()
+geojson_main_4326 = json.loads(gdf_main_4326.to_json())
 
 gdf_technical["Reclassifi"] = pd.to_numeric(gdf_technical["Reclassifi"], errors="coerce").fillna(1).astype(int)
 gdf_technical["detour_fac"] = pd.to_numeric(gdf_technical["detour_fac"], errors="coerce").fillna(1.0).astype(float)
@@ -904,8 +906,8 @@ def update_map(
     vmin, vmax = s.quantile(0.05), s.quantile(0.95)
 
     fig = px.choropleth_mapbox(
-        gdf_main,
-        geojson=geojson_main,
+        gdf_main_4326,
+        geojson=geojson_main_4326,
         color=color_column,
         locations="TARGET_FID",
         featureidkey="properties.TARGET_FID",
@@ -915,7 +917,7 @@ def update_map(
         color_continuous_scale=px.colors.sequential.YlOrRd,
         labels=labels,
         range_color=(vmin, vmax),
-        custom_data=["TARGET_FID"],  # <-- wichtig für clickData
+        #custom_data=["TARGET_FID"],  # <-- wichtig für clickData
     )
     ticks = np.linspace(vmin, vmax, 5)
     fig.update_coloraxes(
