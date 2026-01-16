@@ -525,16 +525,15 @@ def store_selected_fid(clickData, clear_clicks, map_mode):
             raise PreventUpdate
 
         p = clickData["points"][0]
+        # Strategie B: Location (Backup, oft identisch mit der ID bei Choropleth)
+        if "location" in p and p["location"] is not None:
+            return int(p["location"])
 
         # Strategie A: Customdata (Unsere bevorzugte ID)
         if "customdata" in p and p["customdata"] is not None:
             cd = p["customdata"]
             # Sicherstellen, dass wir eine einzelne Zahl bekommen (manchmal ist es eine Liste)
             return int(cd[0] if isinstance(cd, (list, tuple)) else cd)
-
-        # Strategie B: Location (Backup, oft identisch mit der ID bei Choropleth)
-        if "location" in p and p["location"] is not None:
-            return int(p["location"])
 
         # Wenn wir hier sind, wurde geklickt, aber es war kein gültiges Polygon 
         # (z.B. Klick auf eine Grenzlinie oder Hintergrund).
@@ -908,7 +907,8 @@ def update_map(
         gdf_main,
         geojson=geojson_main,
         color=color_column,
-        locations=gdf_main.index,
+        locations="TARGET_FID",
+        featureidkey="properties.TARGET_FID",
         zoom=map_settings["zoom"],
         center=map_settings["center"],
         opacity=0.7,
