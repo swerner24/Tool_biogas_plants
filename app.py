@@ -174,8 +174,8 @@ gdf_main["util_option"] = gdf_main["util_option"].astype(str)
 
 gridcode_mapping_legal = {
     0: "No farms located in legally designated areas",
-    1: "At least one farm located in legal area with lenient legal criteria estimates",
-    2: "At least one farm located in legal area with restrictive legal criteria estimates",
+    1: "At least one farm located in legal permissive area with lenient legal criteria estimates",
+    2: "At least one farm located in legal permissive area with restrictive legal criteria estimates",
     3: "Farms located in both lenient and restrictive legal areas",
 }
 
@@ -226,7 +226,7 @@ short_titles = {
 # Define layout of the app
 app.layout = html.Div([
     html.H1('Decision support tool for agricultural biogas plants in Switzerland'),
-    html.H5('Version 0.0 – 9 January 2025'),
+    html.H5('Version 0.0 – 9 January 2026'),
 
     html.H4("Purpose"),
     html.P(
