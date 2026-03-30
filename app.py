@@ -423,7 +423,12 @@ app.layout = html.Div([
         style={"display": "none"},
     ),
 
-     html.H4("What the tool provides"),
+
+    dcc.Graph(id="graph", style={'width': '100%', 'height': '650px'}, config={'scrollZoom': True}),
+
+
+    html.H4("Additional Information:"),
+    html.H4("What the tool provides"),
     html.Ul([
         html.Li("Manure-based energy potential"),
         html.Li("Legal constraints and regulatory framework"),
@@ -459,8 +464,6 @@ app.layout = html.Div([
         "Werner, S., et al. (in preparation). Unlocking manure´s energy potential from local to national scale: "
         "A case study of Switzerland"
     ),
-
-    dcc.Graph(id="graph", style={'width': '100%', 'height': '650px'}, config={'scrollZoom': True}),
 
 
 
