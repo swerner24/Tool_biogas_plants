@@ -228,7 +228,7 @@ short_titles = {
 # Define layout of the app
 app.layout = html.Div([
     html.H1('Decision support tool for agricultural biogas plants in Switzerland'),
-    html.H5('Version 0.0 – 9 January 2026'),
+    html.H5('Version 0.0 – 30 March 2026'),
 
     html.H4("Purpose"),
     html.P(
@@ -236,41 +236,10 @@ app.layout = html.Div([
         "for agricultural biogas plants in Switzerland, focusing on manure as feedstock."
     ),
 
-    html.H4("What the tool provides"),
-    html.Ul([
-        html.Li("Manure-based energy potential"),
-        html.Li("Legal constraints and regulatory framework"),
-        html.Li("Technical requirements"),
-        html.Li("Climate change impacts"),
-    ]),
-
-    html.H4("Manure-to-energy pathways"),
-    html.Ul([
-        html.Li("Combined heat and power (CHP) generation"),
-        html.Li("Biogas upgrading to biomethane"),
-    ]),
-
-    html.H4("Important notes"),
+    html.H4("Please note:", style={"color": "red"}),
     html.P(
-        "The tool is intended as a screening-level decision support instrument. "
-        "A detailed site-specific analysis remains necessary before concrete planning decisions."
-    ),
-    html.P(
-        "Legal requirements are not always unambiguous and may vary across cantons, authorities, "
-        "and site-specific conditions. To reflect this uncertainty, both restrictive and lenient "
-        "estimates are provided based on expert judgement and the literature."
-    ),
-    html.P(
-        "Transport distance representation: "
-        "The displayed buffer represents an equivalent linear (Euclidean) distance, adjusted by "
-        "polygon-specific detour factors to approximate a maximum road transport distance."
-        "All polygons that intersect the buffer are selected and fully included in the aggregation."
-    ),
-
-    html.H4("Methodological background"),
-    html.P(
-        "Werner, S., et al. (in preparation). Unlocking manure's energy potential in Switzerland: "
-        "A GIS-based decision support tool for agricultural biogas plants."
+    "The tool and its maps may take a few minutes to load. "
+    "If 'Updating…' appears at the very top of the page, the tool is still loading."
     ),
 
     html.H3("Map mode"),
@@ -452,6 +421,43 @@ app.layout = html.Div([
 
         ],
         style={"display": "none"},
+    ),
+
+     html.H4("What the tool provides"),
+    html.Ul([
+        html.Li("Manure-based energy potential"),
+        html.Li("Legal constraints and regulatory framework"),
+        html.Li("Technical requirements"),
+        html.Li("Climate change impacts"),
+    ]),
+
+    html.H4("Manure-to-energy pathways"),
+    html.Ul([
+        html.Li("Combined heat and power (CHP) generation"),
+        html.Li("Biogas upgrading to biomethane"),
+    ]),
+
+    html.H4("Important notes"),
+    html.P(
+        "The tool is intended as a screening-level decision support instrument. "
+        "A detailed site-specific analysis remains necessary before concrete planning decisions."
+    ),
+    html.P(
+        "Legal requirements are not always unambiguous and may vary across cantons, authorities, "
+        "and site-specific conditions. To reflect this uncertainty, both restrictive and lenient "
+        "estimates are provided based on expert judgement and the literature."
+    ),
+    html.P(
+        "Transport distance representation: "
+        "The displayed buffer represents an equivalent linear (Euclidean) distance, adjusted by "
+        "polygon-specific detour factors to approximate a maximum road transport distance."
+        "All polygons that intersect the buffer are selected and fully included in the aggregation."
+    ),
+
+    html.H4("Methodological background"),
+    html.P(
+        "Werner, S., et al. (in preparation). Unlocking manure´s energy potential from local to national scale: "
+        "A case study of Switzerland"
     ),
 
     dcc.Graph(id="graph", style={'width': '100%', 'height': '650px'}, config={'scrollZoom': True}),
