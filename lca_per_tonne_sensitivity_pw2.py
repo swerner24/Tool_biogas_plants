@@ -303,7 +303,7 @@ heat_demand=3500  #kJ/m3
 
 electricity_co2=128 #g CO2/kWh
 external_heat_usage=0.35#%
-heat_substitution=0.0125 #kgCO2/MJ
+heat_substitution=0.102 #kgCO2/MJ
 
 electricity_generated_GJ_chp = {}
 biogas_produced_m3_pw2={}
@@ -558,10 +558,8 @@ RHO_CH4 = 0.67
 
 #--------------------------------------------------For the Tool
 def precompute_chp_lca_factors_for_climate(
-    climate_zone: str,
-    days_pre_summer: int = 12,
-    days_post_summer: int = 30,
-    external_heat_usage:float=0.35,
+    climate_zone, days_pre_summer, days_post_summer,
+    external_heat_usage, heat_substitution=0.0125  # ← neu
 ):
     """
     Returns:
@@ -605,7 +603,7 @@ def precompute_chp_lca_factors_for_climate(
     heat_demand=3500         # kJ/m3
 
     electricity_co2=128      # g CO2/kWh
-    heat_substitution=0.0125 # kgCO2/MJ
+    #heat_substitution=0.102 # kgCO2/MJ
 
     # Construction constants (your numbers)
     CHP_infrastructure=26573.9764256915
