@@ -9,8 +9,7 @@ import plotly.graph_objects as go
 import pandas as pd
 from shapely.geometry import Polygon, mapping
 from potential import calculate_potential
-from env_imp_PW1 import calculate_emissions
-from env_imp_PW1 import compute_field_n2o_vectorized
+from env_imp_PW1 import apply_baseline_emissions_to_polygons
 from env_imp_PW1 import apply_chp_emissions_to_polygons
 from env_imp_PW1 import apply_upgrading_emissions_to_polygons
 import numpy as np
@@ -41,6 +40,13 @@ gdf_plants    = load_or_cache(biogas_path)
 gdf_legal     = load_or_cache(legal_path)
 
 gdf_main, fm_totals, dm_totals, x1, x2, x3, x4, x5, x6 = calculate_potential(input_shapefile)
+
+gdf_main = gdf_main.rename(columns={
+    "Climatezon": "climate_zone",
+    "Klimazone": "climate_zone",
+    "climateZone": "climate_zone",
+})
+
 gdf_pot_env = gdf_main.copy()
 
 FM_COLS_AV = [
@@ -102,23 +108,13 @@ cantons_geojson    = json.loads(gdf_cantons.to_json())
 gdf_main_2056 = gdf_main.to_crs(2056).copy()
 sindex        = gdf_main_2056.sindex
 
-_emissions_cache = {}
 
-def get_emissions_cached(shapefile, days_summer):
-    key = (shapefile, days_summer)
-    if key not in _emissions_cache:
-        gdf_em = calculate_emissions(shapefile, days_summer)
-        _emissions_cache[key] = gdf_em
-    return _emissions_cache[key].copy()
 
 def build_gdf_emissions_pw1(days_summer):
-    gdf_em = get_emissions_cached(input_shapefile, days_summer)
-    gdf_em["TARGET_FID"] = gdf_em["TARGET_FID"].astype(int)
-    cols_to_merge = ["TARGET_FID"] + [c for c in FM_COLS_AV if c in gdf_pot_env.columns]
-    gdf_em = gdf_em.drop(columns=[c for c in FM_COLS_AV if c in gdf_em.columns], errors="ignore")
-    gdf_em = gdf_em.merge(gdf_pot_env[cols_to_merge], on="TARGET_FID", how="left", validate="one_to_one").fillna(0.0)
-    gdf_em = compute_field_n2o_vectorized(gdf_em)
-    gdf_em["GWP100_field_CO2eq"] = gdf_em["N2O_field_kg"] * 273
+    gdf_em = apply_baseline_emissions_to_polygons(
+        gdf_pot_env.copy(),
+        days_summer=int(days_summer)
+    )
     return gdf_em
 
 _gwp_geojson_cache = {}
@@ -203,7 +199,7 @@ short_titles = {
 
 app.layout = html.Div([
     html.H1("Decision support tool for agricultural biogas plants in Switzerland"),
-    html.H5("Version 0.0 – 30 March 2026"),
+    html.H5("Version 0.0 – 05 May 2026"),
 
     html.H4("Purpose"),
     html.P(
@@ -577,10 +573,6 @@ def update_map(
         heat_pct    = float(chp_external_heat_pct if chp_external_heat_pct is not None else 35)
 
         gdf_base = build_gdf_emissions_pw1(days_summer)
-        gdf_base["GWP100_total_noRec_kg"] = (
-            gdf_base["Total_GWP100_CO2eq_prestorage"] + gdf_base["GWP100_field_CO2eq"]
-        )
-        gdf_base["GWP100_total_noRec_t"] = gdf_base["GWP100_total_noRec_kg"] / 1000.0
 
         vmin_base = gdf_base["GWP100_total_noRec_t"].quantile(0.05)
         vmax_base = gdf_base["GWP100_total_noRec_t"].quantile(0.95)
@@ -601,7 +593,7 @@ def update_map(
             gdf_em["GWP100_total_CHP_t"] = gdf_em["GWP100_total_CHP_CO2eq"] / 1000.0
             col   = "GWP100_total_CHP_t"
             title = (
-                f"GWP100 – CHP | Storage: {days_summer}d | "
+                f"GWP100 – CHP | "
                 f"Pre: {int(chp_days_pre or 0)}d | Post: {int(chp_days_post or 0)}d | "
                 f"Excess heat: {heat_pct:.0f}%"
             )
@@ -615,7 +607,7 @@ def update_map(
             gdf_em["GWP100_total_UPG_t"] = gdf_em["GWP100_total_UPG_CO2eq"] / 1000.0
             col   = "GWP100_total_UPG_t"
             title = (
-                f"GWP100 – Upgrading | Storage: {days_summer}d | "
+                f"GWP100 – Upgrading | "
                 f"Pre: {int(upg_days_pre or 0)}d | Post: {int(upg_days_post or 0)}d"
             )
 

@@ -15,6 +15,7 @@ from Storage_emissions import (
 )
 from lca_per_tonne_sensitivity_pw2 import precompute_chp_lca_factors_for_climate
 from lca_per_tonne_sensitivity_pw3 import precompute_upgrading_lca_factors_for_climate
+from lca_per_tonne_sensitivity import precompute_baseline_lca_factors_for_climate
 
 # =============================================================================
 # CONSTANTS
@@ -108,6 +109,7 @@ _nitrogen_cache = {}
 # CHP/Upgrading LCA factor caches: keyed by (cz, days_pre, days_post, heat_usage)
 _chp_factors_cache = {}
 _upg_factors_cache = {}
+_baseline_factors_cache = {}
 
 
 def _get_potential_env_imp(shapefile):
@@ -340,5 +342,69 @@ def apply_upgrading_emissions_to_polygons(gdf_main, days_prestorage, days_postst
     gdf_main["GWP100_total_UPG_CO2eq"] = total
     for comp, arr in comp_arrays.items():
         gdf_main[f"UPG_{comp}_CO2eq"] = arr
+
+    return gdf_main
+
+
+def apply_baseline_emissions_to_polygons(gdf_main, days_summer):
+    """
+    Adds no-energy-recovery baseline GWP100 emissions per polygon (kg CO2-eq),
+    using species-specific per-tonne factors.
+    """
+
+    gdf_main = gdf_main.copy()
+
+    gdf_main["climate_zone"] = (
+        gdf_main["climate_zone"]
+        .astype(float)
+        .astype(int)
+        .astype(str)
+    )
+
+    cz_list = sorted(gdf_main["climate_zone"].dropna().unique().tolist())
+
+    cz_to_factors = {}
+
+    for cz in cz_list:
+        key = (cz, int(days_summer))
+
+        if key not in _baseline_factors_cache:
+            _baseline_factors_cache[key] = precompute_baseline_lca_factors_for_climate(
+                climate_zone=cz,
+                days_summer=int(days_summer),
+                days_winter=180,
+            )
+
+        cz_to_factors[cz] = _baseline_factors_cache[key]
+
+    total = np.zeros(len(gdf_main), dtype=float)
+    storage = np.zeros(len(gdf_main), dtype=float)
+    field = np.zeros(len(gdf_main), dtype=float)
+
+    cz_arr = gdf_main["climate_zone"].to_numpy()
+
+    for cz in cz_list:
+        idx = np.where(cz_arr == cz)[0]
+
+        if len(idx) == 0:
+            continue
+
+        factors = cz_to_factors[cz]
+
+        for sp, col in SPECIES_FM_COLS.items():
+            if col not in gdf_main.columns:
+                continue
+
+            tFM_cz = gdf_main[col].to_numpy(dtype=float)[idx]
+
+            total[idx] += tFM_cz * factors[sp]["GWP_Total_kgCO2eq_per_tFM"]
+            storage[idx] += tFM_cz * factors[sp]["GWP_storage"]
+            field[idx] += tFM_cz * factors[sp]["GWP_field_application"]
+
+    gdf_main["GWP100_total_noRec_kg"] = total
+    gdf_main["GWP100_total_noRec_t"] = total / 1000.0
+
+    gdf_main["BASE_GWP_storage_CO2eq"] = storage
+    gdf_main["BASE_GWP_field_application_CO2eq"] = field
 
     return gdf_main

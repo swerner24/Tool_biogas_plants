@@ -559,7 +559,7 @@ RHO_CH4 = 0.67
 #--------------------------------------------------For the Tool
 def precompute_chp_lca_factors_for_climate(
     climate_zone, days_pre_summer, days_post_summer,
-    external_heat_usage, heat_substitution=0.0125  # ← neu
+    external_heat_usage, heat_substitution=0.102  # ← neu
 ):
     """
     Returns:

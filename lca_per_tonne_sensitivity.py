@@ -257,3 +257,55 @@ pd.set_option("display.width", None)
 pd.set_option("display.max_colwidth", None)
 df_lca = pd.DataFrame(results_LCA).T.reindex(columns=cols)
 #print(df_lca.round(4))
+
+def precompute_baseline_lca_factors_for_climate(climate_zone, days_summer, days_winter=180):
+    SPECIES = ["Cattle", "Horses", "Sheep", "Goats", "Pigs", "Poultry"]
+    GWP_CH4 = 27
+    GWP_N2O = 273
+
+    factors = {}
+
+    for sp in SPECIES:
+        systems_sp = systems_from_species_masses(
+            {sp: 1.0},
+            climate_zone,
+            days_summer,
+            days_winter,
+            f_su_ch4, f_wi_ch4,
+            f_su_n2o, f_wi_n2o
+        )
+
+        res_sp = compute_daily_storage_emissions_multi(systems_sp, year=2025)
+
+        storage_ch4 = float(res_sp["total"]["ch4_kg_daily"].sum())
+        storage_n2o = float(res_sp["total"]["n2o_kg_daily"].sum())
+
+        gwp_storage = storage_ch4 * GWP_CH4 + storage_n2o * GWP_N2O
+
+        storage_n2o_N = storage_n2o * (28 / 44)
+        N_initial = N_content[sp]
+
+        plant_avail_fraction = 0.0
+        for short, share in storage_share[sp].items():
+            pa = n_plant_available.get(short, {}).get(sp, None)
+            if pa is not None:
+                plant_avail_fraction += share * pa
+
+        N_available = max(
+            (N_initial - storage_n2o_N) * plant_avail_fraction * 0.5,
+            0.0
+        )
+
+        NH3_N = N_available * 0.5 * 0.7
+        N2O_field = max((N_available - NH3_N) * 0.1 * (44 / 28), 0.0)
+
+        gwp_field = N2O_field * GWP_N2O
+        gwp_total = gwp_storage + gwp_field
+
+        factors[sp] = {
+            "GWP_Total_kgCO2eq_per_tFM": gwp_total,
+            "GWP_storage": gwp_storage,
+            "GWP_field_application": gwp_field,
+        }
+
+    return factors
