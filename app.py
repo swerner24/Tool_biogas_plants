@@ -520,6 +520,7 @@ def update_map(
             mapbox_style="carto-positron",
             zoom=zoom, center=center, opacity=0.7,
             labels={"util_option": "Utilization option"},
+            custom_data=["util_option"],
             category_orders={"util_option": [
                 "Electricity only", "Gas, no heat", "Heat, no gas",
                 "Gas and heat, different locations", "Gas and heat, same location",
@@ -765,4 +766,4 @@ def update_map(
 
 # =============================================================================
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)
