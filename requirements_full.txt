@@ -1,72 +1,42 @@
-backports.zstd @ file:///D:/bld/bld/rattler-build_backports.zstd_1765057700/work
-blinker @ file:///home/conda/feedstock_root/build_artifacts/blinker_1731096409132/work
-Bottleneck @ file:///C:/miniconda3/conda-bld/bottleneck_1761938191468/work
-branca @ file:///home/conda/feedstock_root/build_artifacts/branca_1759755605562/work
-Brotli @ file:///D:/bld/brotli-split_1764017006836/work
-certifi @ file:///C:/b/abs_1fw_exq1si/croot/certifi_1725551736618/work/certifi
-charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1733218092148/work
-click @ file:///C:/b/abs_f9ihnt72pu/croot/click_1698129847492/work
-colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1733218098505/work
-contourpy @ file:///D:/bld/contourpy_1762525251009/work
-cycler @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_cycler_1764466758/work
-dash @ file:///home/conda/feedstock_root/build_artifacts/dash_1737726527110/work
-dash-bootstrap-components @ file:///home/conda/feedstock_root/build_artifacts/dash-bootstrap-components_1737018778296/work
-dash-core-components @ file:///C:/b/abs_dare0pty8f/croot/dash-core-components_1692905100791/work
-dash-html-components @ file:///C:/b/abs_d0b1b9m9sh/croot/dash-html-components_1692905103352/work
-dash-table @ file:///C:/b/abs_4c284dhikc/croot/dash-table_1692905183712/work
-Flask @ file:///C:/b/abs_f9w7doyu0h/croot/flask_1716545924884/work
-folium @ file:///home/conda/feedstock_root/build_artifacts/folium_1750113804946/work
-fonttools @ file:///D:/bld/fonttools_1765632545629/work
-geopandas @ file:///C:/b/abs_15f9xgmed2/croot/geopandas-split_1741361079487/work
-gunicorn==23.0.0
-h2 @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_h2_1756364871/work
-hatchling @ file:///C:/miniconda3/conda-bld/hatchling_1761057798545/work
-hpack @ file:///home/conda/feedstock_root/build_artifacts/hpack_1737618293087/work
-hyperframe @ file:///home/conda/feedstock_root/build_artifacts/hyperframe_1737618333194/work
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1733211830134/work
-importlib_metadata @ file:///C:/b/abs_9d0lp1ysmt/croot/importlib_metadata-suite_1732633510972/work
-itsdangerous @ file:///home/conda/feedstock_root/build_artifacts/itsdangerous_1733308265247/work
-Jinja2 @ file:///C:/b/abs_ddyeze2h6_/croot/jinja2_1730903330414/work
-joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1765794027227/work
-kiwisolver @ file:///D:/bld/bld/rattler-build_kiwisolver_1762488752/work
-mapclassify @ file:///home/conda/feedstock_root/build_artifacts/mapclassify_1752271512095/work
-MarkupSafe @ file:///C:/b/abs_a0ma7ge0jc/croot/markupsafe_1738584052792/work
-matplotlib==3.10.8
-mkl-service==2.4.0
-mkl_fft @ file:///C:/Users/dev-admin/mkl/mkl_fft_1730823082242/work
-mkl_random @ file:///C:/Users/dev-admin/mkl/mkl_random_1730822522280/work
-munkres==1.1.4
-narwhals @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_narwhals_1765893898/work
-nest_asyncio @ file:///home/conda/feedstock_root/build_artifacts/nest-asyncio_1733325553580/work
-networkx @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_networkx_1765215107/work
-numexpr @ file:///C:/b/abs_4e0h6i5ip2/croot/numexpr_1752521729801/work
-numpy @ file:///D:/bld/numpy_1730588036902/work/dist/numpy-2.1.3-cp311-cp311-win_amd64.whl#sha256=102c9d16b55bb9d4d150a9fc7d35c3c22b00774791127daaf0d375a7ca3464be
-packaging @ file:///C:/b/abs_3by6s2fa66/croot/packaging_1734472138782/work
-pandas @ file:///C:/b/abs_e18w9ay4we/croot/pandas_1732735115740/work/dist/pandas-2.2.3-cp311-cp311-win_amd64.whl#sha256=3a9ed5b5006a5fad640788cd8385485f98b18ac6ff9294cb25b18f3931fed352
-pathspec @ file:///C:/miniconda3/conda-bld/pathspec_1761820738044/work
-pillow @ file:///D:/bld/bld/rattler-build_pillow_1758208682/work
-plotly @ file:///C:/b/abs_28qon8a90a/croot/plotly_1740385581534/work
-pluggy @ file:///C:/b/abs_dfec_m79vo/croot/pluggy_1733170145382/work
-pyogrio @ file:///D:/bld/pyogrio_1732013376854/work
-pyparsing @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pyparsing_1766475444/work
-pyproj @ file:///D:/bld/pyproj_1727795464780/work
-PySocks @ file:///D:/bld/pysocks_1733217287171/work
-python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-dateutil_1751104122/work
-pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1733215667876/work
-requests @ file:///C:/b/abs_c3508vg8ez/croot/requests_1731000584867/work
-retrying @ file:///home/conda/feedstock_root/build_artifacts/retrying_1740053923454/work
-scikit-learn @ file:///D:/bld/bld/rattler-build_scikit-learn_1765801251/work/dist/scikit_learn-1.8.0-cp311-cp311-win_amd64.whl#sha256=6b709d3d1e68d89c77b77f0fb7aa31e6f68e5148d615ecd56f94da3e1262056b
-scipy @ file:///C:/bld/scipy-split_1766107338578/work/dist/scipy-1.16.3-cp311-cp311-win_amd64.whl#sha256=4c1a5c75c2b5c1c59e4a27070d8b598350e4e3af66e17d4c4de299c9b4e9fe16
-shapely @ file:///D:/bld/shapely_1727273591058/work
-six @ file:///tmp/build/80754af9/six_1644875935023/work
-tenacity @ file:///C:/b/abs_1749lsqys6/croot/tenacity_1730304400080/work
-threadpoolctl @ file:///home/conda/feedstock_root/build_artifacts/threadpoolctl_1741878222898/work
-trove-classifiers @ file:///C:/b/abs_7c7nskiwke/croot/trove-classifiers_1753774592913/work
-typing_extensions @ file:///C:/b/abs_0ffjxtihug/croot/typing_extensions_1734714875646/work
-tzdata==2024.2
-unicodedata2 @ file:///D:/bld/unicodedata2_1763054618863/work
-urllib3 @ file:///C:/b/abs_9a_f8h_bn2/croot/urllib3_1727769836930/work
-Werkzeug @ file:///C:/b/abs_b21bhstb1q/croot/werkzeug_1731005800632/work
-win_inet_pton @ file:///D:/bld/win_inet_pton_1733130564612/work
-xyzservices @ file:///home/conda/feedstock_root/build_artifacts/xyzservices_1763813636763/work
-zipp @ file:///C:/b/abs_2fcpcg89my/croot/zipp_1732630746332/work
+blinker==1.9.0
+certifi==2026.4.22
+charset-normalizer==3.4.7
+click==8.3.3
+colorama==0.4.6
+contourpy==1.3.3
+cycler==0.12.1
+dash==4.1.0
+dash-bootstrap-components==2.0.4
+Flask==3.1.3
+fonttools==4.62.1
+geopandas==1.1.3
+gunicorn==26.0.0
+idna==3.13
+importlib_metadata==9.0.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+kiwisolver==1.5.0
+MarkupSafe==3.0.3
+matplotlib==3.10.9
+narwhals==2.20.0
+nest-asyncio==1.6.0
+numpy==2.4.4
+packaging==26.0
+pandas==3.0.2
+pillow==12.2.0
+plotly==6.7.0
+pyarrow==24.0.0
+pyogrio==0.12.1
+pyparsing==3.3.2
+pyproj==3.7.2
+python-dateutil==2.9.0.post0
+requests==2.33.1
+retrying==1.4.2
+scipy==1.17.1
+shapely==2.1.2
+six==1.17.0
+typing_extensions==4.15.0
+tzdata==2026.2
+urllib3==2.6.3
+Werkzeug==3.1.8
+zipp==3.23.1

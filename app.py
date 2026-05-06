@@ -9,9 +9,9 @@ import plotly.graph_objects as go
 import pandas as pd
 from shapely.geometry import Polygon, mapping
 from potential import calculate_potential
-from env_imp_PW1 import apply_baseline_emissions_to_polygons
-from env_imp_PW1 import apply_chp_emissions_to_polygons
-from env_imp_PW1 import apply_upgrading_emissions_to_polygons
+from lca_polygon_application import apply_baseline_emissions_to_polygons
+from lca_polygon_application import apply_chp_emissions_to_polygons
+from lca_polygon_application import apply_upgrading_emissions_to_polygons
 import numpy as np
 from dash.exceptions import PreventUpdate
 

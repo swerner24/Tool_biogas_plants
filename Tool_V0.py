@@ -11,10 +11,10 @@ from shapely.geometry import Polygon, mapping
 import matplotlib.pyplot as plt
 from potential import calculate_potential
 from potential_env_imp import calculate_potential_env_imp
-from env_imp_PW1 import calculate_emissions
-from env_imp_PW1 import compute_field_n2o_vectorized
-from env_imp_PW1 import apply_chp_emissions_to_polygons
-from env_imp_PW1 import  apply_upgrading_emissions_to_polygons
+from lca_polygon_application import calculate_emissions
+from lca_polygon_application import compute_field_n2o_vectorized
+from lca_polygon_application import apply_chp_emissions_to_polygons
+from lca_polygon_application import  apply_upgrading_emissions_to_polygons
 import numpy as np
 from dash import callback, Input, Output, State
 import plotly.graph_objects as go
