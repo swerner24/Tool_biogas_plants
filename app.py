@@ -346,18 +346,33 @@ app.layout = dbc.Container([
         dcc.Input(id="upg_days_post", type="number", value=30, min=0, step=1),
     ], style={"display": "none"}),
 
-    dcc.Loading(
-        id="loading-map",
-        type="default",
-        color="#2c7bb6",
-        children=[
-            html.Div(id="sum-output", style={"marginTop": "10px", "fontWeight": "600"}),
-            dcc.Graph(
-                id="graph",
-                style={"width": "100%", "height": "650px"},
-                config={"scrollZoom": True, "displayModeBar": False},
-            ),
-        ],
+    html.Div(
+        dcc.Loading(
+            id="loading-map",
+            type="default",
+            color="#2c7bb6",
+            children=[
+                html.Div(id="sum-output", style={
+                    "marginTop": "10px",
+                    "fontWeight": "600"}),
+                dcc.Graph(
+                    id="graph",
+                    responsive=True,
+                    style={
+                        "width": "100%",
+                        "height": "650px"},
+                    config={
+                        "scrollZoom": True,
+                        "displayModeBar": False},
+                ),
+            ],
+        ),
+        style={
+            "width": "100%",
+            "height": "700px",
+            "marginBottom": "40px",
+            "overflow": "hidden",
+        }
     ),
 
 
