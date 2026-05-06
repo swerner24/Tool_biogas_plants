@@ -534,6 +534,10 @@ def update_map(
                 "Unknown":                           "#d9d9d9",
             },
         )
+        fig.update_traces(
+            hovertemplate="Utilization option: %{customdata[0]}<extra></extra>",
+        )
+
         if show_plants_technical and "on" in show_plants_technical:
             fig.add_trace(go.Scattermapbox(
                 lat=gdf_plants["lat"], lon=gdf_plants["lon"], mode="markers",
