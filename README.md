@@ -30,11 +30,14 @@ biogasplantstool.azurewebsites.net
 
 ## Project structure
 
-app.py                         # Dash application
-lca_baseline.py                # Baseline LCA (per tonne manure)
-lca_chp.py                     # CHP pathway LCA
-lca_upgrading.py               # Upgrading pathway LCA
-lca_polygon_application.py     # Spatial application of LCA results
-potential.py                   # Manure potential calculations
-assets/                        # GeoJSON for map rendering
-data/                          # Input spatial data
+- app.py                         # Dash application
+- lca_baseline.py                # Baseline LCA (per tonne manure)
+- lca_chp.py                     # CHP pathway LCA
+- lca_upgrading.py               # Upgrading pathway LCA
+- lca_polygon_application.py     # Spatial application of LCA results
+- potential.py                   # Manure potential calculations
+- assets/                        # GeoJSON for map rendering
+- data/                          # Input spatial data
+
+## Methodological background
+Werner, S., et al. (in preparation). Unlocking manure's energy potential from local to national scale: A case study of Switzerland
