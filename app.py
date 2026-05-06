@@ -98,11 +98,32 @@ gdf_legal["legal_clas_named"] = gdf_legal["legal_clas"].map(gridcode_mapping_leg
 gdf_main_4326      = gdf_main.to_crs(4326).copy()
 gdf_cantons        = gdf_main.dissolve(by="Canton").to_crs(4326)
 gdf_legal_4326     = gdf_legal.to_crs(4326)
+gdf_legal_4326 = gdf_legal_4326.reset_index(drop=True)
+gdf_legal_4326["legal_id"] = gdf_legal_4326.index
+# =============================================================================
+# EXPORT LIGHTWEIGHT GEOJSON FILES FOR DASH ASSETS
+# =============================================================================
 
-geojson_main       = json.loads(gdf_main.to_json())
-geojson_main_4326  = json.loads(gdf_main_4326.to_json())
-geojson_technical  = geojson_main
-geojson_legal      = json.loads(gdf_legal_4326.to_json())
+os.makedirs("assets", exist_ok=True)
+
+main_geojson_path = "assets/polygons_main.geojson"
+legal_geojson_path = "assets/polygons_legal.geojson"
+
+if not os.path.exists(main_geojson_path):
+    gdf_main_4326[["TARGET_FID", "geometry"]].to_file(
+        main_geojson_path,
+        driver="GeoJSON"
+    )
+
+if not os.path.exists(legal_geojson_path):
+    gdf_legal_4326[["legal_id", "geometry"]].to_file(
+        legal_geojson_path,
+        driver="GeoJSON"
+    )
+
+
+
+
 cantons_geojson    = json.loads(gdf_cantons.to_json())
 
 gdf_main_2056 = gdf_main.to_crs(2056).copy()
@@ -418,7 +439,7 @@ def toggle_controls(map_mode, gwp_view):
 )
 def store_selected_fid(clickData, clear_clicks, map_mode):
     if map_mode in ["technical", "legal", "gwp"]:
-        return None
+        raise PreventUpdate
     if not ctx.triggered:
         raise PreventUpdate
     trigger = ctx.triggered_id
@@ -488,10 +509,13 @@ def update_map(
     # TECHNICAL
     # ------------------------------------------------------------------
     if map_mode == "technical":
+        plot_df_technical = gdf_main[["TARGET_FID", "util_option"]].copy()
+
         fig = px.choropleth_mapbox(
-            gdf_main[["util_option"]],
-            geojson=geojson_main,
-            locations=gdf_main.index,
+            plot_df_technical,
+            geojson="assets/polygons_main.geojson",
+            locations="TARGET_FID",
+            featureidkey="properties.TARGET_FID",
             color="util_option",
             mapbox_style="carto-positron",
             zoom=zoom, center=center, opacity=0.7,
@@ -526,14 +550,21 @@ def update_map(
     # ------------------------------------------------------------------
     if map_mode == "legal":
         color_col = "legal_clas_named"
+        plot_df_legal = gdf_legal_4326[["legal_id", "legal_clas_named"]].copy()
+
         fig = px.choropleth_mapbox(
-            gdf_legal_4326[["legal_clas_named"]],
-            geojson=geojson_legal,
-            locations=gdf_legal_4326.index,
-            color=color_col,
+            plot_df_legal,
+            geojson="assets/polygons_legal.geojson",
+            locations="legal_id",
+            featureidkey="properties.legal_id",
+            color="legal_clas_named",
             mapbox_style="carto-positron",
-            zoom=zoom, center=center, opacity=0.7,
-            labels={color_col: "Regulatory status (farm-based)"},
+            zoom=zoom,
+            center=center,
+            opacity=0.7,
+            labels={
+                "legal_clas_named": "Regulatory status (farm-based)"},
+            custom_data=["legal_clas_named"],
             category_orders={color_col: [
                 "No farms located in legally designated areas",
                 "At least one farm located in lenient legal area",
@@ -549,9 +580,9 @@ def update_map(
             },
         )
         fig.update_traces(
-            customdata=gdf_legal_4326[color_col],
-            hovertemplate="Regulatory status (farm-based): %{customdata}<extra></extra>",
+            hovertemplate="Regulatory status (farm-based): %{customdata[0]}<extra></extra>"
         )
+
         if show_plants_legal and "on" in show_plants_legal:
             fig.add_trace(go.Scattermapbox(
                 lat=gdf_plants["lat"], lon=gdf_plants["lon"], mode="markers",
@@ -614,10 +645,13 @@ def update_map(
         else:
             raise PreventUpdate
 
-        geojson_em = get_gwp_geojson(gdf_em)
+
+
+        plot_df = gdf_em[["TARGET_FID", col]].copy()
+
         fig = px.choropleth_mapbox(
-            gdf_em.to_crs(4326),
-            geojson=geojson_em,
+            plot_df,
+            geojson="assets/polygons_main.geojson",
             locations="TARGET_FID",
             featureidkey="properties.TARGET_FID",
             color=col,
@@ -648,9 +682,11 @@ def update_map(
     s          = pd.to_numeric(gdf_main[color_column], errors="coerce").fillna(0.0)
     vmin, vmax = s.quantile(0.05), s.quantile(0.95)
 
+    plot_df = gdf_main_4326[["TARGET_FID", color_column]].copy()
+
     fig = px.choropleth_mapbox(
-        gdf_main_4326,
-        geojson=geojson_main_4326,
+        plot_df,
+        geojson="assets/polygons_main.geojson",
         color=color_column,
         locations="TARGET_FID",
         featureidkey="properties.TARGET_FID",
