@@ -197,10 +197,15 @@ CANTON_LAYER = {
 
 def base_layout(zoom, center):
     return dict(
-        mapbox=dict(style="carto-positron", zoom=zoom, center=center, layers=[CANTON_LAYER]),
+        mapbox=dict(
+            style="carto-positron",
+            zoom=zoom,
+            center=center,
+            layers=[CANTON_LAYER]
+        ),
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
-        width=1200,
-        height=650,
+        autosize=True,
+        height=750,
     )
 
 # =============================================================================
@@ -218,7 +223,7 @@ short_titles = {
     "Total_biomethane_yield_available_TJ": "Biomethane potential [TJ/y]",
 }
 
-app.layout = html.Div([
+app.layout = dbc.Container([
     html.H1("Decision support tool for agricultural biogas plants in Switzerland"),
     html.H5("Version 0.0 – 05 May 2026"),
 
@@ -391,7 +396,7 @@ app.layout = html.Div([
         "Werner, S., et al. (in preparation). Unlocking manure's energy potential from local to "
         "national scale: A case study of Switzerland"
     ),
-])
+], fluid=True)
 
 # =============================================================================
 # CALLBACKS
