@@ -602,7 +602,7 @@ def precompute_chp_lca_factors_for_climate(
     electricity_demand=576   # kJ/m3
     heat_demand=3500         # kJ/m3
 
-    electricity_co2=128      # g CO2/kWh
+    electricity_co2=128   # g CO2/kWh
     #heat_substitution=0.102 # kgCO2/MJ
 
     # Construction constants (your numbers)
@@ -739,3 +739,6 @@ def precompute_chp_lca_factors_for_climate(
         }
 
     return factors
+
+
+

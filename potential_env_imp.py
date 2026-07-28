@@ -779,11 +779,11 @@ def calculate_potential_env_imp(input_shapefile):
     slurry_pigs_m3_av_series = slurry_pigs_m3_series
 
     # 6) POULTRY – Gülle (belt) + Mist (floor); RF = 1
-    slurry_poultry_m3_series = gdf["Poultry_1"] * stable_system_poultry["poultry_1"]["manure_belt"] * manure_production_poultry["poultry_1"]["s"]
+    slurry_poultry_m3_series = (gdf["Poultry_1"] * stable_system_poultry["poultry_1"]["manure_belt"] * manure_production_poultry["poultry_1"]["s"])/100
     slurry_poultry_m3_av_series = slurry_poultry_m3_series
-    manure_poultry_t_series = gdf["Poultry_1"] * stable_system_poultry["poultry_1"]["floor_system"] * manure_production_poultry["poultry_1"]["m"] + \
+    manure_poultry_t_series = (gdf["Poultry_1"] * stable_system_poultry["poultry_1"]["floor_system"] * manure_production_poultry["poultry_1"]["m"] + \
                               gdf["Poultry_2"] * manure_production_poultry["poultry_2"]["m"] + \
-                              gdf["Poultry_3"] * manure_production_poultry["poultry_3"]["m"]
+                              gdf["Poultry_3"] * manure_production_poultry["poultry_3"]["m"])/100
     manure_poultry_t_av_series = manure_poultry_t_series
 
     # --- Spalten in gdf schreiben (klar benannt) ---

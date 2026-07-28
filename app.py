@@ -223,9 +223,16 @@ short_titles = {
     "Total_biomethane_yield_available_TJ": "Biomethane potential [TJ/y]",
 }
 
+HEAT_SUBSTITUTION_OPTIONS = {
+    "oil":      {"label": "Heating oil",       "value": 0.102},
+    "gas":      {"label": "Natural gas",       "value": 0.0746},
+    "wood": {"label": "Wood",  "value": 0.0057},
+    "heatpump": {"label": "Heat pump","value": 0.021},
+}
+
 app.layout = dbc.Container([
     html.H1("Decision support tool for agricultural biogas plants in Switzerland"),
-    html.H5("Version 0.0 – 05 May 2026"),
+    html.H5("Version 1.0 – 28 July 2026"),
 
     html.H4("Purpose"),
     html.P(
@@ -315,7 +322,7 @@ app.layout = dbc.Container([
     # Stores (kein UI)
     dcc.Store(id="selected-fid", data=None),
     dcc.Store(id="map_settings", data={"zoom": 7, "center": {"lat": 47, "lon": 8.5}}),
-    dcc.Store(id="chp_heat_substitution", data=0.102),  # Oil: 0.102 kgCO2/MJ (fixed)
+    # dcc.Store(id="chp_heat_substitution", data=0.102),  # Oil: 0.102 kgCO2/MJ (fixed), old
 
     # GWP sub-controls
     html.Div(id="controls-gwp-no-recovery", children=[
@@ -336,6 +343,19 @@ app.layout = dbc.Container([
         html.Label("Excess heat usage factor (0–100%)"),
         dcc.Slider(id="chp_external_heat_pct", min=0, max=100, step=5, value=35,
                    tooltip={"placement": "bottom", "always_visible": True}),
+        html.Hr(),
+        html.Label("Substituted heat source:"),
+        dcc.Dropdown(
+            id="heat_substitution_fuel",
+            options=[{
+                         "label": v["label"],
+                         "value": k} for k, v in HEAT_SUBSTITUTION_OPTIONS.items()],
+            value="oil",
+            clearable=False,
+            style={
+                "maxWidth": "300px",
+                "marginBottom": "10px"},
+        ),
     ], style={"display": "none"}),
 
     html.Div(id="controls-gwp-upgrading", children=[
@@ -408,7 +428,7 @@ app.layout = dbc.Container([
     ),
     html.H4("Methodological background"),
     html.P(
-        "Werner, S., et al. (in preparation). Unlocking manure's energy potential from local to "
+        "Werner, S., et al. (in preparation). Unlocking manure's biogas potential from local to "
         "national scale: A case study of Switzerland"
     ),
 ], fluid=True)
@@ -507,7 +527,7 @@ def update_map_settings(relayoutData, map_settings):
     Input("chp_days_pre",          "value"),
     Input("chp_days_post",         "value"),
     Input("chp_external_heat_pct", "value"),
-    State("chp_heat_substitution", "data"),
+    Input("heat_substitution_fuel","value"),
     Input("upg_days_pre",          "value"),
     Input("upg_days_post",         "value"),
     State("map_settings",          "data"),
@@ -519,7 +539,7 @@ def update_map(
     show_plants, show_plants_legal, show_plants_technical,
     gwp_view,
     days_summer, chp_days_pre, chp_days_post, chp_external_heat_pct,
-    chp_heat_substitution,
+    heat_substitution_fuel,
     upg_days_pre, upg_days_post,
     map_settings,
 ):
@@ -639,19 +659,22 @@ def update_map(
             title  = f"GWP100 – No energy recovery | Storage: {days_summer} days"
 
         elif gwp_view == "abs_chp":
+            fuel_key = heat_substitution_fuel or "oil"
+            heat_sub_factor = HEAT_SUBSTITUTION_OPTIONS[fuel_key]["value"]
+
             gdf_em = apply_chp_emissions_to_polygons(
                 gdf_base.copy(),
                 days_prestorage=int(chp_days_pre or 0),
                 days_poststorage=int(chp_days_post or 0),
                 external_heat_usage=heat_pct / 100.0,
-                heat_substitution_oil=float(chp_heat_substitution or 0.102),
+                heat_substitution_oil=heat_sub_factor,
             )
             gdf_em["GWP100_total_CHP_t"] = gdf_em["GWP100_total_CHP_CO2eq"] / 1000.0
             col   = "GWP100_total_CHP_t"
             title = (
                 f"GWP100 – CHP | "
                 f"Pre: {int(chp_days_pre or 0)}d | Post: {int(chp_days_post or 0)}d | "
-                f"Excess heat: {heat_pct:.0f}%"
+                f"Excess heat: {heat_pct:.0f}% | Substituted: {HEAT_SUBSTITUTION_OPTIONS[fuel_key]['label']}"
             )
 
         elif gwp_view == "abs_upgrading":
