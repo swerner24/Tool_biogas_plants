@@ -87,10 +87,10 @@ gdf_technical["Reclassifi_named"] = gdf_technical["Reclassifi"].map(gridcode_map
 gdf_main["util_option"]           = gdf_main["Reclassifi"].map(gridcode_mapping).fillna("Unknown").astype(str)
 
 gridcode_mapping_legal = {
-    0: "No farms located in legally designated areas",
-    1: "At least one farm located in legal permissive area with lenient legal criteria estimates",
-    2: "At least one farm located in legal permissive area with restrictive legal criteria estimates",
-    3: "Farms located in both lenient and restrictive legal areas",
+    0: "No farm in a legally permissible area",
+    1: "Permissible only under lenient criteria",
+    2: "Permissible also under restrictive criteria",
+    3: "Permissible also under restrictive criteria",
 }
 gdf_legal["legal_clas"]       = gdf_legal["legal_clas"].astype(int)
 gdf_legal["legal_clas_named"] = gdf_legal["legal_clas"].map(gridcode_mapping_legal)
@@ -622,16 +622,14 @@ def update_map(
                 "legal_clas_named": "Regulatory status (farm-based)"},
             custom_data=["legal_clas_named"],
             category_orders={color_col: [
-                "No farms located in legally designated areas",
-                "At least one farm located in lenient legal area",
-                "At least one farm located in restrictive legal area",
-                "Farms located in both lenient and restrictive legal areas",
+                "Permissible also under restrictive criteria",
+                "Permissible only under lenient criteria",
+                "No farm in a legally permissible area",
             ]},
             color_discrete_map={
-                "No farms located in legally designated areas":                                          "#d9d9d9",
-                "At least one farm located in legal permissive area with lenient legal criteria estimates":   "#a6d96a",
-                "At least one farm located in legal permissive area with restrictive legal criteria estimates": "#fdae61",
-                "Farms located in both lenient and restrictive legal areas":                              "#d7191c",
+                "Permissible also under restrictive criteria": "#d7191c",
+                "Permissible only under lenient criteria":     "#a6d96a",
+                "No farm in a legally permissible area":       "#d9d9d9",
                 "Unknown": "#bdbdbd",
             },
         )
