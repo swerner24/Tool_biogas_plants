@@ -195,13 +195,24 @@ CANTON_LAYER = {
     "line":       {"width": 1.5},
 }
 
+# Hintergrundkarte: swisstopo Landeskarte grau (frei, kein API-Key noetig).
+# Ersetzt "carto-positron", da CARTO-Basemaps neu einen API-Key verlangen.
+SWISSTOPO_LAYER = {
+    "below":             "traces",
+    "sourcetype":        "raster",
+    "sourceattribution": "© swisstopo",
+    "source": [
+        "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/3857/{z}/{x}/{y}.jpeg"
+    ],
+}
+
 def base_layout(zoom, center):
     return dict(
         mapbox=dict(
-            style="carto-positron",
+            style="white-bg",                        # vorher: "carto-positron"
             zoom=zoom,
             center=center,
-            layers=[CANTON_LAYER]
+            layers=[SWISSTOPO_LAYER, CANTON_LAYER]   # vorher: [CANTON_LAYER]
         ),
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
         autosize=True,
